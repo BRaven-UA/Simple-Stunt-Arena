@@ -5,7 +5,7 @@ using UnityEngine;
 // Manages ingame checkpoints: placing on the level, trigger, SFX
 public class CheckpointManager : MonoBehaviour
 {
-    [SerializeField] private Pointer GUI;
+    private Pointer2 GUI;
     private Transform[] points; // array of potential places for checkpoint
     private Transform currentPoint; // current place for checkpoint
     private Transform lastPoint; // previous checkpoint location
@@ -14,6 +14,7 @@ public class CheckpointManager : MonoBehaviour
 
     void Start()
     {
+        GUI = GetComponentInChildren<Pointer2>();
         sound = gameObject.GetComponent<AudioSource>();
 
         checkPoint = transform.Find("CheckPoint");
@@ -54,7 +55,7 @@ public class CheckpointManager : MonoBehaviour
     {
         var _newPoint = GetRandomPoint();
         if (_newPoint == null) return;
-
+       
         if (currentPoint != null) lastPoint = currentPoint;
         currentPoint = _newPoint;
 

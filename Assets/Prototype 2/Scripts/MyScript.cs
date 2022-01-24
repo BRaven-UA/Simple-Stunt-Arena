@@ -6,16 +6,17 @@ using QuantumTek.QuantumUI;
 public class MyScript : MonoBehaviour
 {
     [SerializeField] private MSSceneControllerFree controlManager; // reference to MS Vehicle System (third party) scene controller
-    [SerializeField] private MSVehicleControllerFree vehicleManager; // reference to MS Vehicle System (third party) vehicle controller
+    private MSVehicleControllerFree vehicleManager; // reference to MS Vehicle System (third party) vehicle controller
     [SerializeField] private CheckpointManager checkpointManager; // reference to checkpoint system manager
     [SerializeField] private AudioClip nitroSound;
     [SerializeField] private AudioClip jumpSound;
     [SerializeField] private QUI_Bar progressBar; // reference to GUI visualisation of nitro value
-    [SerializeField] private int jumpForce = 10000;
-    [SerializeField] private int nitroForce = 40000;
+    private int jumpForce;
+    private int nitroForce ;
     private GameObject vehicle;
     private Rigidbody vehicleRB;
     private AudioSource vehicleAudioPlayer;
+    private ParticleSystem[] nitroFX;
     private float nitroValue = 0; // amount of nitro to spend
     private float nitroPerFrame; // nitro consumption per fixed frame
     private bool isJumping = false;
@@ -27,18 +28,24 @@ public class MyScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // lock and hide cursor
         Application.targetFrameRate = FPS; // FPS limit
         
-        nitroPerFrame = Time.fixedDeltaTime * 1.5f;
+        nitroPerFrame = Time.fixedDeltaTime * 0.5f;
 
-        vehicle = controlManager.vehicles[0]; // get first vehicle defined via MS Vehicle System (third party)
+        vehicle = controlManager.GetCurrentVehicle(); // current vehicle defined via MS Vehicle System (third party)
         vehicleRB = vehicle.GetComponent<Rigidbody>();
         vehicleRB.centerOfMass = vehicle.transform.Find("CoM").localPosition;
         
+        vehicleManager = vehicle.GetComponent<MSVehicleControllerFree>();
         vehicleAudioPlayer = vehicle.GetComponent<AudioSource>();
+        nitroFX = vehicle.GetComponentsInChildren<ParticleSystem>();
+
+        int _totalMass = GetVehicleTotalMass(vehicleManager);
+        jumpForce = _totalMass * 10;
+        nitroForce = _totalMass * 20;
     }
 
     void FixedUpdate()
     {
-        if (Input.GetMouseButtonDown(0) && vehicleManager.GetGroundedWheels() > 2) // Left mouse button press is for jump initial impulse (3 or more wheels should be grounded)
+        if (Input.GetMouseButtonDown(0) && vehicleManager.GetGroundedWheels() > 1) // Left mouse button press is for jump initial impulse (2 or more wheels should be grounded)
         {
             isJumping = true;
             VehicleSFX(jumpSound);
@@ -54,9 +61,10 @@ public class MyScript : MonoBehaviour
         if (isJumping) // Holding left mouse button is for continuous jumping
             VehicleJump();
 
-        if (Input.GetMouseButtonDown(1) && (vehicleManager.GetGroundedWheels() > 2) && (nitroValue > nitroPerFrame)) // Right mouse button is for speed up (3 or more wheels should be grounded and there must be enough nitro)
+        if (Input.GetMouseButtonDown(1) && (nitroValue > nitroPerFrame)) // Right mouse button is for speed up (there must be enough nitro)
         {
             isNitro = true;    
+            VehicleVFX(true);
             VehicleSFX(nitroSound);
             VehicleNitro();
         }
@@ -64,6 +72,7 @@ public class MyScript : MonoBehaviour
         if (Input.GetMouseButtonUp(1) || (nitroValue < nitroPerFrame))
         {
             isNitro = false;
+            VehicleVFX(false);
             VehicleSFX();
         }
 
@@ -77,6 +86,17 @@ public class MyScript : MonoBehaviour
 
         nitroValue = Mathf.Clamp(nitroValue, 0, 1);
         progressBar.SetFill(nitroValue);
+    }
+
+    private int GetVehicleTotalMass(MSVehicleControllerFree vehicle)
+    {
+        float _result = vehicle.GetComponentInChildren<Rigidbody>().mass;
+        
+        List<WheelCollider> _wheels = new();
+        vehicle.GetComponentsInChildren<WheelCollider>(false, _wheels);
+        _wheels.ForEach(wheel => _result += wheel.mass);
+        
+        return ((int)_result);
     }
 
     public void ResetVehiclePosition() // Move the vehicle to tle last checkpoint, reset its transform, velocity, and shut down the engine
@@ -102,9 +122,20 @@ public class MyScript : MonoBehaviour
 
     private void VehicleSFX(AudioClip clip = null)
     {
-        if (clip == null)
-            vehicleAudioPlayer.Stop();
+        if (clip == null){
+            vehicleAudioPlayer.volume = 1;
+            StartCoroutine(FadeAudioSource.StartFade(vehicleAudioPlayer, 1, 0));
+        }
         else
             vehicleAudioPlayer.PlayOneShot(clip);
+    }
+
+    private void VehicleVFX(bool enable){
+        if (nitroFX == null) return;
+
+        foreach (ParticleSystem particleSystem in nitroFX){
+            if (enable == true) particleSystem.Play();
+            else particleSystem.Stop();
+        }
     }
 }

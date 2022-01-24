@@ -292,123 +292,123 @@ public class MSSceneControllerFree : MonoBehaviour {
 			}
 			#endregion
 
-			vehicleCode = vehicles [currentVehicle].GetComponent<MSVehicleControllerFree> ();
-			EnableOrDisableButtons (vehicleCode.isInsideTheCar);
+			// vehicleCode = vehicles [currentVehicle].GetComponent<MSVehicleControllerFree> ();
+			// EnableOrDisableButtons (vehicleCode.isInsideTheCar);
 
-			if (Input.GetKeyDown (controls.reloadScene) && controls.enable_reloadScene_Input) {
-				SceneManager.LoadScene (sceneName);
-			}
+			// if (Input.GetKeyDown (controls.reloadScene) && controls.enable_reloadScene_Input) {
+			// 	SceneManager.LoadScene (sceneName);
+			// }
 
-			if (Input.GetKeyDown (controls.pause) && controls.enable_pause_Input) {
-				pause = !pause;
-			}
-			if (pause) {
-				Time.timeScale = Mathf.Lerp (Time.timeScale, 0.0f, Time.fixedDeltaTime * 5.0f);
-			} else {
-				Time.timeScale = Mathf.Lerp (Time.timeScale, 1.0f, Time.fixedDeltaTime * 5.0f);
-			}
+			// if (Input.GetKeyDown (controls.pause) && controls.enable_pause_Input) {
+			// 	pause = !pause;
+			// }
+			// if (pause) {
+			// 	Time.timeScale = Mathf.Lerp (Time.timeScale, 0.0f, Time.fixedDeltaTime * 5.0f);
+			// } else {
+			// 	Time.timeScale = Mathf.Lerp (Time.timeScale, 1.0f, Time.fixedDeltaTime * 5.0f);
+			// }
 
-			if ((Input.GetKeyDown (controls.enterEndExit)||enterAndExitBool) && !blockedInteraction && player && controls.enable_enterEndExit_Input) {
-				if (vehicles.Length <= 1) {
-					if (vehicleCode.isInsideTheCar) {
-						vehicleCode.ExitTheVehicle ();
-						if (player) {
-							player.SetActive (true);
-							if (vehicleCode.doorPosition[0].transform.position != vehicles [currentVehicle].transform.position) {
-								player.transform.position = vehicleCode.doorPosition[0].transform.position;
-							} else {
-								player.transform.position = vehicleCode.doorPosition[0].transform.position + Vector3.up * 3.0f;
-							}
-						}
-						blockedInteraction = true;
-						enterAndExitBool = false;
-						StartCoroutine ("WaitToInteract");
-					} else {
-						currentDistanceTemp = Vector3.Distance (player.transform.position, vehicleCode.doorPosition[0].transform.position);
-						for (int x = 0; x < vehicleCode.doorPosition.Length; x++) {
-							proximityDistanceTemp = Vector3.Distance (player.transform.position, vehicleCode.doorPosition [x].transform.position);
-							if (proximityDistanceTemp < currentDistanceTemp) {
-								currentDistanceTemp = proximityDistanceTemp;
-							}
-						}
-						if (currentDistanceTemp < minDistance) {
-							vehicleCode.EnterInVehicle ();
-							if (player) {
-								player.SetActive (false);
-							}
-							blockedInteraction = true;
-							enterAndExitBool = false;
-							StartCoroutine ("WaitToInteract");
-						} else {
-							enterAndExitBool = false;
-						}
-					}
-				} else {
-					proximityObjectIndex = 0;
-					proximityDoorIndex = 0;
-					for (int x = 0; x < vehicles.Length; x++) {
-						controllerTemp = vehicles [x].GetComponent<MSVehicleControllerFree> ();
+			// if ((Input.GetKeyDown (controls.enterEndExit)||enterAndExitBool) && !blockedInteraction && player && controls.enable_enterEndExit_Input) {
+			// 	if (vehicles.Length <= 1) {
+			// 		if (vehicleCode.isInsideTheCar) {
+			// 			vehicleCode.ExitTheVehicle ();
+			// 			if (player) {
+			// 				player.SetActive (true);
+			// 				if (vehicleCode.doorPosition[0].transform.position != vehicles [currentVehicle].transform.position) {
+			// 					player.transform.position = vehicleCode.doorPosition[0].transform.position;
+			// 				} else {
+			// 					player.transform.position = vehicleCode.doorPosition[0].transform.position + Vector3.up * 3.0f;
+			// 				}
+			// 			}
+			// 			blockedInteraction = true;
+			// 			enterAndExitBool = false;
+			// 			StartCoroutine ("WaitToInteract");
+			// 		} else {
+			// 			currentDistanceTemp = Vector3.Distance (player.transform.position, vehicleCode.doorPosition[0].transform.position);
+			// 			for (int x = 0; x < vehicleCode.doorPosition.Length; x++) {
+			// 				proximityDistanceTemp = Vector3.Distance (player.transform.position, vehicleCode.doorPosition [x].transform.position);
+			// 				if (proximityDistanceTemp < currentDistanceTemp) {
+			// 					currentDistanceTemp = proximityDistanceTemp;
+			// 				}
+			// 			}
+			// 			if (currentDistanceTemp < minDistance) {
+			// 				vehicleCode.EnterInVehicle ();
+			// 				if (player) {
+			// 					player.SetActive (false);
+			// 				}
+			// 				blockedInteraction = true;
+			// 				enterAndExitBool = false;
+			// 				StartCoroutine ("WaitToInteract");
+			// 			} else {
+			// 				enterAndExitBool = false;
+			// 			}
+			// 		}
+			// 	} else {
+			// 		proximityObjectIndex = 0;
+			// 		proximityDoorIndex = 0;
+			// 		for (int x = 0; x < vehicles.Length; x++) {
+			// 			controllerTemp = vehicles [x].GetComponent<MSVehicleControllerFree> ();
 
-						for (int y = 0; y < controllerTemp.doorPosition.Length; y++) {
-							currentDistanceTemp = Vector3.Distance (player.transform.position, controllerTemp.doorPosition[y].transform.position);
-							proximityDistanceTemp = Vector3.Distance (player.transform.position, vehicles [proximityObjectIndex].GetComponent<MSVehicleControllerFree> ().doorPosition[proximityDoorIndex].transform.position);
-							if (currentDistanceTemp < proximityDistanceTemp) {
-								proximityObjectIndex = x;
-								proximityDoorIndex = y;
-							}
-						}
+			// 			for (int y = 0; y < controllerTemp.doorPosition.Length; y++) {
+			// 				currentDistanceTemp = Vector3.Distance (player.transform.position, controllerTemp.doorPosition[y].transform.position);
+			// 				proximityDistanceTemp = Vector3.Distance (player.transform.position, vehicles [proximityObjectIndex].GetComponent<MSVehicleControllerFree> ().doorPosition[proximityDoorIndex].transform.position);
+			// 				if (currentDistanceTemp < proximityDistanceTemp) {
+			// 					proximityObjectIndex = x;
+			// 					proximityDoorIndex = y;
+			// 				}
+			// 			}
 
-					}
+			// 		}
 					
-					if (vehicleCode.isInsideTheCar) {
-						vehicleCode.ExitTheVehicle ();
-						if (player) {
-							player.SetActive (true);
-							if (vehicleCode.doorPosition[0].transform.position != vehicles [currentVehicle].transform.position) {
-								player.transform.position = vehicleCode.doorPosition[0].transform.position;
-							} else {
-								player.transform.position = vehicleCode.doorPosition[0].transform.position + Vector3.up * 3.0f;
-							}
-						}
-						blockedInteraction = true;
-						enterAndExitBool = false;
-						StartCoroutine ("WaitToInteract");
-					} else {
-						controllerTemp = vehicles [proximityObjectIndex].GetComponent<MSVehicleControllerFree> ();
-						proximityDistanceTemp = Vector3.Distance (player.transform.position, controllerTemp.doorPosition[0].transform.position);
-						for (int x = 0; x < controllerTemp.doorPosition.Length; x++) {
-							currentDistanceTemp = Vector3.Distance (player.transform.position, controllerTemp.doorPosition [x].transform.position);
-							if (currentDistanceTemp < proximityDistanceTemp) {
-								proximityDistanceTemp = currentDistanceTemp;
-							}
-						}
-						if (proximityDistanceTemp < minDistance) {
-							currentVehicle = proximityObjectIndex;
-							vehicles [currentVehicle].GetComponent<MSVehicleControllerFree> ().EnterInVehicle ();
-							if (player) {
-								player.SetActive (false);
-							}
-							blockedInteraction = true;
-							enterAndExitBool = false;
-							StartCoroutine ("WaitToInteract");
-						} else {
-							enterAndExitBool = false;
-						}
-					}
-				}
-			}
+			// 		if (vehicleCode.isInsideTheCar) {
+			// 			vehicleCode.ExitTheVehicle ();
+			// 			if (player) {
+			// 				player.SetActive (true);
+			// 				if (vehicleCode.doorPosition[0].transform.position != vehicles [currentVehicle].transform.position) {
+			// 					player.transform.position = vehicleCode.doorPosition[0].transform.position;
+			// 				} else {
+			// 					player.transform.position = vehicleCode.doorPosition[0].transform.position + Vector3.up * 3.0f;
+			// 				}
+			// 			}
+			// 			blockedInteraction = true;
+			// 			enterAndExitBool = false;
+			// 			StartCoroutine ("WaitToInteract");
+			// 		} else {
+			// 			controllerTemp = vehicles [proximityObjectIndex].GetComponent<MSVehicleControllerFree> ();
+			// 			proximityDistanceTemp = Vector3.Distance (player.transform.position, controllerTemp.doorPosition[0].transform.position);
+			// 			for (int x = 0; x < controllerTemp.doorPosition.Length; x++) {
+			// 				currentDistanceTemp = Vector3.Distance (player.transform.position, controllerTemp.doorPosition [x].transform.position);
+			// 				if (currentDistanceTemp < proximityDistanceTemp) {
+			// 					proximityDistanceTemp = currentDistanceTemp;
+			// 				}
+			// 			}
+			// 			if (proximityDistanceTemp < minDistance) {
+			// 				currentVehicle = proximityObjectIndex;
+			// 				vehicles [currentVehicle].GetComponent<MSVehicleControllerFree> ().EnterInVehicle ();
+			// 				if (player) {
+			// 					player.SetActive (false);
+			// 				}
+			// 				blockedInteraction = true;
+			// 				enterAndExitBool = false;
+			// 				StartCoroutine ("WaitToInteract");
+			// 			} else {
+			// 				enterAndExitBool = false;
+			// 			}
+			// 		}
+			// 	}
+			// }
 			//
-			if (!playerIsNull) {
-				if (player.gameObject.activeInHierarchy) {
-					EnableUI (false);
-				} else {
-					EnableUI (UIVisualizer);
-				}
-			} else {
-				EnableUI (UIVisualizer);
-			}
+			// if (!playerIsNull) {
+			// 	if (player.gameObject.activeInHierarchy) {
+			// 		EnableUI (false);
+			// 	} else {
+			// 		EnableUI (UIVisualizer);
+			// 	}
+			// } else {
+			// 	EnableUI (UIVisualizer);
+			// }
 			//
-			if (vehicles.Length > 0 && currentVehicle < vehicles.Length && UIVisualizer && vehicleCode) {
+			// if (vehicles.Length > 0 && currentVehicle < vehicles.Length && UIVisualizer && vehicleCode) {
 				if (vehicleCode.isInsideTheCar) {
 					clampGear = Mathf.Clamp (vehicleCode.currentGear, -1, 1);
 					if (clampGear == 0) {
@@ -421,7 +421,7 @@ public class MSSceneControllerFree : MonoBehaviour {
 					handBrakeText.text = "HandBreak: " + vehicleCode.handBrakeTrue;
 					pauseText.text = "Pause: " + pause;
 				}
-			}
+			// }
 		}
 	}
 
@@ -552,4 +552,6 @@ public class MSSceneControllerFree : MonoBehaviour {
 			enterAndExitBool = true;
 		}
 	}
+
+	public GameObject GetCurrentVehicle() {return vehicles [currentVehicle];}
 }

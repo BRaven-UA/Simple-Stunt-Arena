@@ -989,6 +989,7 @@ GameObject:
   - component: {fileID: 3177247748764600940}
   - component: {fileID: 1696687166027189085}
   - component: {fileID: 5303592648367125422}
+  - component: {fileID: 4401282637174964434}
   - component: {fileID: 6845022633201978622}
   m_Layer: 0
   m_Name: MonsterTruck
@@ -1593,6 +1594,23 @@ MonoBehaviour:
   disableVehicle: 0
   handBrakeTrue: 0
   isInsideTheCar: 1
+--- !u!114 &4401282637174964434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2836152117393510614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b76031e0d55174ca061c8121bcc013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlManager: {fileID: 0}
+  checkpointManager: {fileID: 0}
+  nitroSound: {fileID: 8300000, guid: fa8baa48d686c7f4197d29cf3b116099, type: 3}
+  jumpSound: {fileID: 8300000, guid: 9c8d2064d3939674a91dbbe298610517, type: 3}
+  progressBar: {fileID: 0}
 --- !u!82 &6845022633201978622
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12059,7 +12077,7 @@ Camera:
   m_GameObject: {fileID: 7226327626157923702}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2

@@ -17,7 +17,7 @@ public static class FadeAudioSource {
         }
 
         audioSource.Stop();
-        audioSource.volume = startVolume;
+        //audioSource.volume = startVolume;
         yield break;
     }
 }

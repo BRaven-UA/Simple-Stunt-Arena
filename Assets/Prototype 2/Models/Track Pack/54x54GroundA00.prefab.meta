@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: af50c37be97dbcd498e89e095f7f3f25
+labels:
+- Terrain
 PrefabImporter:
   externalObjects: {}
   userData: 

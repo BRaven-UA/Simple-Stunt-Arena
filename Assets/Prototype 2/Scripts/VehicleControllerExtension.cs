@@ -8,14 +8,15 @@ public class VehicleControllerExtension : MonoBehaviour
     [SerializeField] private MSSceneControllerFree controlManager; // reference to MS Vehicle System (third party) scene controller
     private MSVehicleControllerFree MSVehicleManager; // reference to MS Vehicle System (third party) vehicle controller
     [SerializeField] private CheckpointManager checkpointManager; // reference to checkpoint system manager
-    [SerializeField] private AudioClip boostSound;
-    [SerializeField] private AudioClip jumpSound;
     [SerializeField] private QUI_Bar progressBar; // reference to GUI visualisation of boost value
     private int jumpForce;
     private int boostForce ;
     private Rigidbody rigidBody;
-    private AudioSource vehicleAudioPlayer;
-    private ParticleSystem[] boostFX;
+    private AudioSource jumpSFX;
+    private AudioSource boostSFX;
+    private float jumpSFXvolume; // to be able restore original volume after fade effect
+    private float boostSFXvolume; // to be able restore original volume after fade effect
+    private ParticleSystem[] boostVFX;
     private float boostValue = 0; // amount of boost to spend
     private float boostPerFrame; // boost consumption per fixed frame
     private bool isJumping = false;
@@ -30,8 +31,20 @@ public class VehicleControllerExtension : MonoBehaviour
         rigidBody.centerOfMass = transform.Find("CoM").localPosition;
         
         MSVehicleManager = GetComponent<MSVehicleControllerFree>();
-        vehicleAudioPlayer = GetComponent<AudioSource>();
-        boostFX = GetComponentsInChildren<ParticleSystem>();
+        foreach (var SFX in GetComponents<AudioSource>())
+        {
+            if (SFX.clip.name.Contains("jump", System.StringComparison.OrdinalIgnoreCase))
+            {
+                jumpSFX = SFX;
+                jumpSFXvolume = SFX.volume;
+            }
+            if (SFX.clip.name.Contains("boost", System.StringComparison.OrdinalIgnoreCase))
+            {
+                boostSFX = SFX;
+                boostSFXvolume = SFX.volume;
+            }
+        } 
+        boostVFX = GetComponentsInChildren<ParticleSystem>();
 
         int _totalMass = GetTotalMass();
         jumpForce = _totalMass * 10;
@@ -50,7 +63,7 @@ public class VehicleControllerExtension : MonoBehaviour
             if (!isJumping && !isMidair) // initialization
             {
                 isJumping = true;
-                SoundFX(jumpSound);
+                PlaySFX(jumpSFX, true, jumpSFXvolume);
                 Jump(ForceMode.Impulse);
             }
 
@@ -59,18 +72,19 @@ public class VehicleControllerExtension : MonoBehaviour
         else if (isJumping) // stop jumping
         {
             isJumping = false;
-            SoundFX();
+            PlaySFX(jumpSFX, false);
         }
 
         // BOOSTING. Allowed any time if enough boost value has been accumulated.
         // Consumes boost value when active, otherwise slowly refreshes its value.
+        // TODO: fix endless holding
         if (Input.GetButton("Boost") && boostValue > boostPerFrame) // Left mouse button
         {
             if (!isBoosting) // initialization
             {
                 isBoosting = true;    
-                BoostFX(true);
-                SoundFX(boostSound);
+                PlayVFX(true);
+                PlaySFX(boostSFX, true, boostSFXvolume);
             }
 
             Boost();
@@ -78,8 +92,8 @@ public class VehicleControllerExtension : MonoBehaviour
         else if (isBoosting) // stop accelerating
         {
             isBoosting = false;
-            BoostFX(false);
-            SoundFX();
+            PlayVFX(false);
+            PlaySFX(boostSFX, false);
         }
         else boostValue += Time.fixedDeltaTime / 10; // refreshing to full value within 10 secs
 
@@ -140,21 +154,21 @@ public class VehicleControllerExtension : MonoBehaviour
         boostValue -= boostPerFrame;
     }
 
-    private void SoundFX(AudioClip clip = null)
+    private void PlaySFX(AudioSource SFX, bool enabled, float volume = 1)
     {
-        if (clip == null){
-            vehicleAudioPlayer.volume = 1;
-            StartCoroutine(FadeAudioSource.StartFade(vehicleAudioPlayer, 1, 0));
+        if (enabled)
+        {
+            SFX.volume = volume;
+            SFX.Play();
         }
-        else
-            vehicleAudioPlayer.PlayOneShot(clip);
+        else StartCoroutine(FadeAudioSource.StartFade(SFX, 0.5f, 0));
     }
 
-    private void BoostFX(bool enable){
-        if (boostFX == null) return;
+    private void PlayVFX(bool enabled){
+        if (boostVFX == null) return;
 
-        foreach (ParticleSystem particleSystem in boostFX){
-            if (enable == true) particleSystem.Play();
+        foreach (ParticleSystem particleSystem in boostVFX){
+            if (enabled == true) particleSystem.Play();
             else particleSystem.Stop();
         }
     }

@@ -110,20 +110,20 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.45
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 70
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 1
+    m_Stiffness: 4.75
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.05
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_AsymptoteSlip: 0.3
+    m_AsymptoteValue: 1
+    m_Stiffness: 1.5
   m_Enabled: 1
 --- !u!1 &1448894429929438966
 GameObject:
@@ -5387,20 +5387,20 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.45
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 70
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 1
+    m_Stiffness: 4.75
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.05
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_AsymptoteSlip: 0.3
+    m_AsymptoteValue: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!1 &4763923688913095807
 GameObject:
@@ -5449,20 +5449,20 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.45
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 70
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 1
+    m_Stiffness: 4.75
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.05
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_AsymptoteSlip: 0.3
+    m_AsymptoteValue: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!1 &5015913842706378865
 GameObject:
@@ -10614,14 +10614,14 @@ MonoBehaviour:
         sensibility: 0.58
         speedScrool: 0.78
         speedYAxis: 0.5
-        minDistance: 3
-        maxDistance: 100
+        minDistance: 20
+        maxDistance: 20
         invertRotationJoystick: 1
   _vehicleTorque:
-    maxVelocityKMh: 250
-    engineTorque: 5
-    numberOfGears: 8
-    speedOfGear: 1.5
+    maxVelocityKMh: 240
+    engineTorque: 3
+    numberOfGears: 12
+    speedOfGear: 2
     manualAdjustmentOfTorques:
     - 1.1
     - 1
@@ -11027,16 +11027,16 @@ MonoBehaviour:
     startOn: 0
     vehicleMass: 700
     improveControl:
-      tireSlipsFactor: 1
-      helpToTurn: 1.04
-      helpToStraightenOut: 0.52
+      tireSlipsFactor: 1.2
+      helpToTurn: 0.1
+      helpToStraightenOut: 0.1
       downForce: 2
     _aerodynamics:
       extraGravity: 1
       feelingHeavy: 1
       downForceAngleFactor: 0.2
-      verticalDownForce: 0.8
-      minDownForceValue: 2
+      verticalDownForce: 0.44
+      minDownForceValue: 1
     centerOfMass: {fileID: 796710850102135744}
     volant: {fileID: 0}
     angle_x_Velocity:
@@ -11064,7 +11064,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   _wheels:
-    wheelMass: 15
+    wheelMass: 70
     rightFrontWheel:
       wheelMesh: {fileID: 1795293207364722747}
       wheelCollider: {fileID: 7381275957296902698}
@@ -11072,12 +11072,12 @@ MonoBehaviour:
       wheelHandBrake: 0
       skidMarkShift: 0.15
       wheelTurn: 1
-      wheelWorldPosition: {x: 2.4316347, y: 0.5296017, z: 180.43018}
+      wheelWorldPosition: {x: 103.42552, y: 26.216188, z: -281.35385}
       rendSKDmarks: {fileID: 0}
       generateSkidBool: 0
-      wheelColliderRPM: 0.0048821312
+      wheelColliderRPM: 0
       forwardSkid: 0
-      sidewaysSkid: 0
+      sidewaysSkid: 0.0003660599
     leftFrontWheel:
       wheelMesh: {fileID: 5329697172260981913}
       wheelCollider: {fileID: 6022863901057164225}
@@ -11085,12 +11085,12 @@ MonoBehaviour:
       wheelHandBrake: 0
       skidMarkShift: -0.15
       wheelTurn: 1
-      wheelWorldPosition: {x: 0.7987281, y: 0.5296017, z: 182.04993}
+      wheelWorldPosition: {x: 102.52265, y: 25.837616, z: -279.8305}
       rendSKDmarks: {fileID: 0}
       generateSkidBool: 0
-      wheelColliderRPM: 0.00488659
-      forwardSkid: 0
-      sidewaysSkid: 0
+      wheelColliderRPM: 0
+      forwardSkid: 0.9384664
+      sidewaysSkid: 0.39959106
     rightRearWheel:
       wheelMesh: {fileID: 3740446933481278628}
       wheelCollider: {fileID: 9198416632075268454}
@@ -11098,12 +11098,12 @@ MonoBehaviour:
       wheelHandBrake: 1
       skidMarkShift: 0.15
       wheelTurn: 0
-      wheelWorldPosition: {x: -0.13467923, y: 0.52975583, z: 177.84302}
+      wheelWorldPosition: {x: 101.172935, y: 25.858587, z: -282.7801}
       rendSKDmarks: {fileID: 0}
       generateSkidBool: 0
       wheelColliderRPM: 0
       forwardSkid: 0
-      sidewaysSkid: 0
+      sidewaysSkid: 0.040741377
     leftRearWheel:
       wheelMesh: {fileID: 3164554924265251373}
       wheelCollider: {fileID: 5126309316989336454}
@@ -11111,12 +11111,12 @@ MonoBehaviour:
       wheelHandBrake: 1
       skidMarkShift: -0.15
       wheelTurn: 0
-      wheelWorldPosition: {x: -1.767586, y: 0.52975595, z: 179.46278}
+      wheelWorldPosition: {x: 100.22765, y: 25.915304, z: -281.3013}
       rendSKDmarks: {fileID: 0}
       generateSkidBool: 0
       wheelColliderRPM: 0
       forwardSkid: 0
-      sidewaysSkid: 0
+      sidewaysSkid: 0.011309476
   _sounds:
     speedOfEngineSound: 2.5
     engineSound: {fileID: 8300000, guid: ea2f6284fb2d5a44784c012c3c786f87, type: 3}
@@ -11132,10 +11132,10 @@ MonoBehaviour:
     sensibility: 1
     standardColor: {r: 0, g: 0, b: 0, a: 0.36078432}
   skidMarksShader: {fileID: 0}
-  KMh: 0.000004234231
+  KMh: 0.042060226
   currentGear: 1
   disableVehicle: 0
-  handBrakeTrue: 1
+  handBrakeTrue: 0
   isInsideTheCar: 1
 --- !u!114 &1401256786311087475
 MonoBehaviour:
@@ -11152,6 +11152,7 @@ MonoBehaviour:
   controlManager: {fileID: 0}
   checkpointManager: {fileID: 0}
   progressBar: {fileID: 0}
+  jumpForce: 0
 --- !u!82 &7210075969422742209
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11260,7 +11261,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9c8d2064d3939674a91dbbe298610517, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -11564,20 +11565,20 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.45
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 70
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 1
+    m_Stiffness: 4.75
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.05
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_AsymptoteSlip: 0.3
+    m_AsymptoteValue: 1
+    m_Stiffness: 1.5
   m_Enabled: 1
 --- !u!1 &8862938731454013458
 GameObject:

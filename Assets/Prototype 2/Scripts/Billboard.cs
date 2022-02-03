@@ -5,7 +5,7 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
     private Camera mainCamera;
-    void Start()
+    void Awake()
     {
         mainCamera = Camera.main;
     }

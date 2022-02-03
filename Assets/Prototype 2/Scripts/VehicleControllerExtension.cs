@@ -9,8 +9,8 @@ public class VehicleControllerExtension : MonoBehaviour
     private MSVehicleControllerFree MSVehicleManager; // reference to MS Vehicle System (third party) vehicle controller
     [SerializeField] private CheckpointManager checkpointManager; // reference to checkpoint system manager
     [SerializeField] private QUI_Bar progressBar; // reference to GUI visualisation of boost value
-    private int jumpForce;
-    private int boostForce ;
+    [SerializeField] private float jumpForce;
+    private float boostForce ;
     private Rigidbody rigidBody;
     private AudioSource jumpSFX;
     private AudioSource boostSFX;
@@ -19,11 +19,12 @@ public class VehicleControllerExtension : MonoBehaviour
     private ParticleSystem[] boostVFX;
     private float boostValue = 0; // amount of boost to spend
     private float boostPerFrame; // boost consumption per fixed frame
+    private bool canJump = true;
     private bool isJumping = false;
     private bool isBoosting = false;
     private bool isMidairControlEnabled = false; // switch vehicle control when in the air
 
-    void Start()
+    void Awake()
     {
         boostPerFrame = Time.fixedDeltaTime * 0.5f;
 
@@ -46,28 +47,32 @@ public class VehicleControllerExtension : MonoBehaviour
         } 
         boostVFX = GetComponentsInChildren<ParticleSystem>();
 
-        int _totalMass = GetTotalMass();
-        jumpForce = _totalMass * 10;
-        boostForce = _totalMass * 20;
+        //var _totalMass = GetTotalMass();
+        //jumpForce = _totalMass * 20;
+        //boostForce = _totalMass * 25;
+        boostForce = rigidBody.mass * 25;
     }
 
     void FixedUpdate()
     {
         bool isMidair = (MSVehicleManager.GetGroundedWheels() == 0);
 
-        // JUMPING. Initial jump is an impulse and only allowed when grounded.
-        // Holding down the mouse button increases the height of the jump
-        // TODO: fix double jump when spamming the button
+        // JUMPING. Initial jump is an impulse directed up in global coordinates, enabled only when grounded.
+        // Holding down the mouse button increases the height and the time of the jump
+        // FIXME: walljumping
         if (Input.GetButton("Jump")) // Right mouse button
         {
-            if (!isJumping && !isMidair) // initialization
+            if (canJump && !isJumping && !isMidair) // initialization
             {
                 isJumping = true;
                 PlaySFX(jumpSFX, true, jumpSFXvolume);
-                Jump(ForceMode.Impulse);
+                rigidBody.angularVelocity = Vector3.zero;
+                rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // apply global up impulse
+                canJump = false; // disable jumping
+                Invoke("EnableJump", 1); // enable jumping after 1 second
             }
 
-            Jump(); 
+            if (isJumping) rigidBody.AddRelativeForce(Vector3.up * jumpForce, ForceMode.Force); // extend jumping: apply local up force
         }
         else if (isJumping) // stop jumping
         {
@@ -87,7 +92,9 @@ public class VehicleControllerExtension : MonoBehaviour
                 PlaySFX(boostSFX, true, boostSFXvolume);
             }
 
-            Boost();
+            rigidBody.AddRelativeForce(Vector3.forward * boostForce, ForceMode.Force);
+            boostValue -= boostPerFrame;
+
         }
         else if (isBoosting) // stop accelerating
         {
@@ -112,7 +119,11 @@ public class VehicleControllerExtension : MonoBehaviour
                 isMidairControlEnabled = true;
             }
         }
-        else isMidairControlEnabled = false; // reverting to normal control
+        else
+        {
+            isMidairControlEnabled = false; // reverting to normal control
+            isJumping = false;
+        }
 
         if (Input.GetKeyDown(KeyCode.F)) ResetPosition();
         
@@ -141,18 +152,15 @@ public class VehicleControllerExtension : MonoBehaviour
         MSVehicleManager.StartCoroutine ("StartEngineCoroutine", false);
 
         Input.ResetInputAxes();
+
+        boostValue = 0;
+        canJump = true;
+        isJumping = false;
+        isBoosting = false;
+        isMidairControlEnabled = false;
     }
 
-    public void Jump(ForceMode mode = ForceMode.Force)
-    {
-        rigidBody.AddRelativeForce(Vector3.up * jumpForce, mode);
-    }
-
-    public void Boost()
-    {
-        rigidBody.AddRelativeForce(Vector3.forward * boostForce, ForceMode.Force);
-        boostValue -= boostPerFrame;
-    }
+    private void EnableJump() {canJump = true;}
 
     private void PlaySFX(AudioSource SFX, bool enabled, float volume = 1)
     {

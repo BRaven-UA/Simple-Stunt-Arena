@@ -145,9 +145,9 @@ public class OrbitalCameraSettingsClassFree {
 	public float speedScrool = 1.0f;
 	[Range(0.01f,2.0f)][Tooltip("In this variable, you can configure the speed at which the orbital camera moves up or down.")]
 	public float speedYAxis = 0.5f;
-	[Range(3.0f,20.0f)][Tooltip("In this variable, you can set the minimum distance that the orbital camera can stay from the player.")]
+	[Range(2.0f,100.0f)][Tooltip("In this variable, you can set the minimum distance that the orbital camera can stay from the player.")]
 	public float minDistance = 5.0f;
-	[Range(20.0f,1000.0f)][Tooltip("In this variable, you can set the maximum distance that the orbital camera can stay from the player.")]
+	[Range(2.0f,100.0f)][Tooltip("In this variable, you can set the maximum distance that the orbital camera can stay from the player.")]
 	public float maxDistance = 500.0f;
 	[Tooltip("If this variable is true, the orbital camera has the axes reversed when the Joystick is active.")]
 	public bool invertRotationJoystick = true;
@@ -1583,6 +1583,8 @@ public class MSVehicleControllerFree : MonoBehaviour {
 		if (startOn) {
 			yield return new WaitForSeconds (1.5f);
 			theEngineIsRunning = true;
+			handBrakeTrue = false;
+			
 		} else {
 			enableEngineSound = false;
 			theEngineIsRunning = false;

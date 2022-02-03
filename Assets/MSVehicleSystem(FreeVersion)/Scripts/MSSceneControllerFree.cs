@@ -466,6 +466,12 @@ public class MSSceneControllerFree : MonoBehaviour {
 		}
 	}
 
+	public void SetVehicle(int index)
+	{
+		currentVehicle = index;
+		EnableVehicle (currentVehicle - 1);
+	}
+
 	IEnumerator WaitToInteract(){
 		yield return new WaitForSeconds (0.7f);
 		blockedInteraction = false;

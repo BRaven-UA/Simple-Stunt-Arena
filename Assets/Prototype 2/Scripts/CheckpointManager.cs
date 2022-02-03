@@ -7,17 +7,20 @@ public class CheckpointManager : MonoBehaviour
 {
     private Pointer2 GUI;
     private Transform[] points; // array of potential places for checkpoint
-    private Transform currentPoint; // current place for checkpoint
     private Transform lastPoint; // previous checkpoint location
-    private Transform checkPoint;   // reference to gameobject with visuals and physics
+    private Transform currentPoint; // current place for checkpoint
+    private Transform nextPoint; // next checkpoint after current
+    private Transform checkPointGameObject;   // reference to gameobject with visuals and physics
+    private Transform pointer;   // gameobject that points to the next checkpoint
     private AudioSource sound; // sound of triggered checkpoint
 
-    void Start()
+    void Awake()
     {
         GUI = GetComponentInChildren<Pointer2>();
         sound = gameObject.GetComponent<AudioSource>();
 
-        checkPoint = transform.Find("CheckPoint");
+        checkPointGameObject = transform.Find("CheckPoint");
+        pointer = checkPointGameObject.transform.Find("Pointer");
         lastPoint = transform.Find("StartPoint"); // initial position (placed manually)
 
         // fill the array with manually placed points
@@ -28,8 +31,11 @@ public class CheckpointManager : MonoBehaviour
         {
             points[i] = _container.GetChild(i);
         }
+    }
 
-        SetNextCheckpoint();
+    void Start()
+    {
+        SetCurrentCheckpoint();
     }
 
     private Transform GetRandomPoint() // chooses randomly one of overall available points
@@ -47,28 +53,38 @@ public class CheckpointManager : MonoBehaviour
 
     private void SetCheckPoint() // sets checkpoint gameobject on current point (place)
     {
-        checkPoint.SetPositionAndRotation(currentPoint.position, currentPoint.rotation);
-        checkPoint.gameObject.SetActive(true);
+        checkPointGameObject.SetPositionAndRotation(currentPoint.position, currentPoint.rotation);
+        pointer.LookAt(nextPoint);
+        checkPointGameObject.gameObject.SetActive(true);
     }
 
-    private void SetNextCheckpoint() // defines which point (place) will be next, updates GUI and set checkpoint
+    private void SetCurrentCheckpoint() // defines current checkpoint, updates GUI and set checkpoint
     {
         var _newPoint = GetRandomPoint();
-        if (_newPoint == null) return;
+        if (_newPoint == null) return; // point generator doesn't work, check points aren't available
        
-        if (currentPoint != null) lastPoint = currentPoint;
-        currentPoint = _newPoint;
+        if (currentPoint) // at least one checkpoint has already been reached
+        {
+            lastPoint = currentPoint;
+            currentPoint = nextPoint;
+            nextPoint = _newPoint;
+        }
+        else // for the very first checkpoint
+        {
+            currentPoint = _newPoint;
+            nextPoint = GetRandomPoint(); // another random point
+        }
 
-        if (GUI != null) GUI.SetTarget(currentPoint);
+        if (GUI) GUI.SetTarget(currentPoint);
 
         SetCheckPoint();
     }
 
-    public void OnCheckPointReached() // called by checkpoint gameobject, plays sound, removes current checkpoint and sets next checpoint
+    public void OnCheckPointReached() // called by checkpoint gameobject, plays sound, removes current checkpoint and sets next checkpoint
     {
         sound.Play();
-        checkPoint.gameObject.SetActive(false);
-        SetNextCheckpoint();
+        checkPointGameObject.gameObject.SetActive(false);
+        SetCurrentCheckpoint();
     }
 
     public Transform GetLastPoint() {return lastPoint;} // TODO: replace with set/get

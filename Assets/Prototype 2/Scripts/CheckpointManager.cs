@@ -5,18 +5,21 @@ using UnityEngine;
 // Manages ingame checkpoints: placing on the level, trigger, SFX
 public class CheckpointManager : MonoBehaviour
 {
-    private Pointer2 GUI;
+    [SerializeField] private GameManager gameManager;
+    private Pointer GUI;
+    
     private Transform[] points; // array of potential places for checkpoint
     private Transform lastPoint; // previous checkpoint location
     private Transform currentPoint; // current place for checkpoint
     private Transform nextPoint; // next checkpoint after current
+    
     private Transform checkPointGameObject;   // reference to gameobject with visuals and physics
     private Transform pointer;   // gameobject that points to the next checkpoint
     private AudioSource sound; // sound of triggered checkpoint
 
     void Awake()
     {
-        GUI = GetComponentInChildren<Pointer2>();
+        GUI = GetComponentInChildren<Pointer>();
         sound = gameObject.GetComponent<AudioSource>();
 
         checkPointGameObject = transform.Find("CheckPoint");
@@ -83,6 +86,7 @@ public class CheckpointManager : MonoBehaviour
     public void OnCheckPointReached() // called by checkpoint gameobject, plays sound, removes current checkpoint and sets next checkpoint
     {
         sound.Play();
+        gameManager.AddBonusTime();
         checkPointGameObject.gameObject.SetActive(false);
         SetCurrentCheckpoint();
     }

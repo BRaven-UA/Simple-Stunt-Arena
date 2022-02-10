@@ -1071,8 +1071,8 @@ MonoBehaviour:
         sensibility: 0.58
         speedScrool: 0.78
         speedYAxis: 0.5
-        minDistance: 20
-        maxDistance: 20
+        minDistance: 13
+        maxDistance: 13
         invertRotationJoystick: 1
   _vehicleTorque:
     maxVelocityKMh: 150
@@ -1609,7 +1609,7 @@ MonoBehaviour:
   controlManager: {fileID: 0}
   checkpointManager: {fileID: 0}
   progressBar: {fileID: 0}
-  jumpForce: 0
+  jumpForce: 35000
 --- !u!82 &6845022633201978622
 AudioSource:
   m_ObjectHideFlags: 0

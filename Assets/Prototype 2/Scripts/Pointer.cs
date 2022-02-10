@@ -10,17 +10,16 @@ public class Pointer : MonoBehaviour
     private Camera pointerCamera;
     private Camera mainCamera;
 
-    void Start()
+    void Awake()
     {
         mainCamera = Camera.main; // get a camera tagget as 'MainCamera'
         pointerCamera = GetComponentInChildren<Camera>();
         pointerMesh = transform.Find("PointerMesh");
         // target = transform.parent.Find("StartPoint");
+        SetTarget(null); // hide itself after initialization
     }
     void LateUpdate()
     {
-        if (target == null || pointerCamera == null || mainCamera == null) return;
-
         pointerMesh.transform.position = mainCamera.transform.position;
         pointerMesh.transform.LookAt(target); // face to the target direction
 
@@ -28,8 +27,9 @@ public class Pointer : MonoBehaviour
         pointerCamera.transform.Translate(Vector3.back * 10, Space.Self);
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Transform target) // set a target to look at
     {
-        if (target != null) this.target = target;
+        this.target = target;
+        gameObject.SetActive(target && pointerCamera && mainCamera); // deactivate itself if one of the conditions aren't fulfilled
     }
 }

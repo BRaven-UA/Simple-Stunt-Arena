@@ -10541,7 +10541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7681348901811711123
 Transform:
   m_ObjectHideFlags: 0
@@ -10614,8 +10614,8 @@ MonoBehaviour:
         sensibility: 0.58
         speedScrool: 0.78
         speedYAxis: 0.5
-        minDistance: 20
-        maxDistance: 20
+        minDistance: 7
+        maxDistance: 7
         invertRotationJoystick: 1
   _vehicleTorque:
     maxVelocityKMh: 240
@@ -11152,7 +11152,7 @@ MonoBehaviour:
   controlManager: {fileID: 0}
   checkpointManager: {fileID: 0}
   progressBar: {fileID: 0}
-  jumpForce: 0
+  jumpForce: 10000
 --- !u!82 &7210075969422742209
 AudioSource:
   m_ObjectHideFlags: 0

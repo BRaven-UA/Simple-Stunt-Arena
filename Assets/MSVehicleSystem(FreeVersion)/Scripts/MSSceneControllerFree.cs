@@ -559,5 +559,9 @@ public class MSSceneControllerFree : MonoBehaviour {
 		}
 	}
 
-	public GameObject GetCurrentVehicle() {return vehicles [currentVehicle];}
+	public GameObject GetVehicle(int index = -1)
+	{
+		if (index == -1) index = currentVehicle;
+		return vehicles[index];
+	}
 }

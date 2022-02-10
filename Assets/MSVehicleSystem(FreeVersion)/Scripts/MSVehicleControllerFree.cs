@@ -1581,7 +1581,7 @@ public class MSVehicleControllerFree : MonoBehaviour {
 	}
 	IEnumerator StartEngineCoroutine(bool startOn){
 		if (startOn) {
-			yield return new WaitForSeconds (1.5f);
+			yield return new WaitForSeconds (0.5f); //(1.5f);
 			theEngineIsRunning = true;
 			handBrakeTrue = false;
 			

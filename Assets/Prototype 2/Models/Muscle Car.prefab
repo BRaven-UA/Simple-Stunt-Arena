@@ -6495,12 +6495,12 @@ MonoBehaviour:
         sensibility: 0.58
         speedScrool: 0.78
         speedYAxis: 0.5
-        minDistance: 20
-        maxDistance: 20
+        minDistance: 11
+        maxDistance: 11
         invertRotationJoystick: 1
   _vehicleTorque:
-    maxVelocityKMh: 240
-    engineTorque: 4
+    maxVelocityKMh: 200
+    engineTorque: 3
     numberOfGears: 12
     speedOfGear: 2
     manualAdjustmentOfTorques:
@@ -7033,7 +7033,7 @@ MonoBehaviour:
   controlManager: {fileID: 0}
   checkpointManager: {fileID: 0}
   progressBar: {fileID: 0}
-  jumpForce: 0
+  jumpForce: 13000
 --- !u!82 &3131539658437410422
 AudioSource:
   m_ObjectHideFlags: 0

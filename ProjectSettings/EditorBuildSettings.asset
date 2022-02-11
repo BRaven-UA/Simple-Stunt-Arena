@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/BRaven/Scene.unity
+    guid: 726174b45a50ec344aa8621904042686
   m_configObjects: {}
